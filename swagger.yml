@@ -1,0 +1,571 @@
+openapi: 3.1.0
+info:
+  title: 非公式三菱UFJアセットマネジメント投資情報API仕様書
+  description: |-
+    三菱UFJアセットマネジメントが公開している[投資情報API仕様書](https://www.am.mufg.jp/tool/webapi/)を
+    OpenAPI仕様に書き起こした非公式の仕様書です。
+    最新の仕様は公式サイトを参照してください。
+    本仕様書は公式の仕様書に記載されていない仕様を実際のAPIのレスポンスを元に補完しています。
+    そのため、公式の仕様書と異なる点があります。
+
+    また、APIに関する一切の問い合わせは受け付けてません。
+    加えて本仕様書に関する問い合わせを三菱UFJアセットマネジメントにしないようお願いいたします。
+
+    APIを利用する場合は[Web API利用規約](https://www.am.mufg.jp/tool/webapi/agreement.html)への同意が必要です。
+  termsOfService: https://www.am.mufg.jp/tool/webapi/agreement.html
+  contact:
+    email: SuzumiyaAoba@gmail.com
+  license:
+    name: MIT License
+    url: https://opensource.org/license/mit/
+  version: 1.1.0.1
+externalDocs:
+  description: 投資情報API | 投資信託なら三菱UFJアセットマネジメント
+  url: https://www.am.mufg.jp/tool/webapi/
+servers:
+  - url: https://developer.am.mufg.jp
+paths:
+  /fund_information_all_latest:
+    get:
+      summary: 最新ファンド情報（全ファンド）
+      description: 全ファンドの最新情報を返します。
+      security: []
+      operationId: getFundInformationAllLatest
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundInformation"
+  /fund_information_latest/association_fund_cd/{associationFundCd}:
+    get:
+      summary: 最新ファンド情報（協会コード指定）
+      description: 協会コードで指定されたファンドの最新情報を返す。
+      security: []
+      operationId: getFundInformationLatestByAssociationFundCd
+      parameters:
+        - name: associationFundCd
+          in: path
+          description: 協会ID
+          required: true
+          schema:
+            type: string
+            example: 0331418A
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundInformation"
+  /fund_information_latest/isin_cd/{isinCd}:
+    get:
+      summary: 最新ファンド情報（ISINコード指定）
+      description: ISINコードで指定されたファンドの最新情報を返す。
+      security: []
+      operationId: getFundInformationLatestByIsinCd
+      parameters:
+        - name: isinCd
+          in: path
+          description: ISINコード
+          required: true
+          schema:
+            type: string
+            example: JP90C000H1T1
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundInformation"
+  /fund_information_latest/fund_cd/{fundCd}:
+    get:
+      summary: 最新ファンド情報（ファンドコード指定）
+      description: ファンドコードで指定されたファンドの最新情報を返す。
+      operationId: getFundInformationLatestByFundCd
+      security: []
+      parameters:
+        - name: fundCd
+          in: path
+          description: ファンドコード
+          required: true
+          schema:
+            type: string
+            example: 253425
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundInformation"
+  /fund_information_all_date/base_date/{baseDate}:
+    get:
+      summary: ファンド情報（全ファンド・基準日指定）
+      description: 指定基準日の全ファンド情報を返します。
+      security: []
+      operationId: getFundInformationAllDateByBaseDate
+      parameters:
+        - name: baseDate
+          in: path
+          description: 基準日
+          required: true
+          schema:
+            type: string
+            example: 20230103
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundInformation"
+  /fund_information_date/association_fund_cd/{associationFundCd}/base_date/{baseDate}:
+    get:
+      summary: ファンド情報（協会コード・基準日指定）
+      description: 協会コード・基準日で指定されたファンド情報を返します。
+      security: []
+      operationId: getFundInformationOnBaseDateByAssociationFundCd
+      parameters:
+        - name: associationFundCd
+          in: path
+          description: 協会コード
+          required: true
+          schema:
+            type: string
+            example: 0331418A
+        - name: baseDate
+          in: path
+          description: 基準日
+          required: true
+          schema:
+            type: string
+            example: 20230103
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundInformation"
+  /fund_information_date/isin_cd/{isinCd}/base_date/{baseDate}:
+    get:
+      summary: ファンド情報（ISINコード・基準日指定）
+      description: ISINコード・基準日で指定されたファンド情報を返します。
+      security: []
+      operationId: getFundInformationOnBaseDateByIsinCd
+      parameters:
+        - name: isinCd
+          in: path
+          description: ISINコード
+          required: true
+          schema:
+            type: string
+            example: JP90C000H1T1
+        - name: baseDate
+          in: path
+          description: 基準日
+          required: true
+          schema:
+            type: string
+            example: 20230103
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundInformation"
+  /fund_information_date/fund_cd/{fundCd}/base_date/{baseDate}:
+    get:
+      summary: ファンド情報（ファンドコード・基準日指定）
+      description: ファンドコード・基準日で指定されたファンド情報を返します。
+      security: []
+      operationId: getFundInformationOnBaseDateByFundCd
+      parameters:
+        - name: fundCd
+          in: path
+          description: ファンドコード
+          required: true
+          schema:
+            type: string
+            example: 253425
+        - name: baseDate
+          in: path
+          description: 基準日
+          required: true
+          schema:
+            type: string
+            example: 20230103
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundInformation"
+  /code_list:
+    get:
+      summary: コード一覧（全ファンド）
+      description: 全ファンドのコード一覧を返します。
+      security: []
+      operationId: getCodeList
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CodeList"
+components:
+  schemas:
+    FundInformation:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            status:
+              type: integer
+              format: int32
+              example: 200
+            recount:
+              type: integer
+              format: int64
+              example: 1
+            errcd:
+              description: 仕様書に記載のないキーです。
+              nullable: true
+              type: string
+              example: null
+            errmsg:
+              description: 仕様書に記載のないキーです。
+              nullable: true
+              type: string
+              example: null
+            function:
+              type: string
+        errors:
+          type: object
+          properties:
+            count:
+              description: 仕様書に記載されていないキーです。
+              type: integer
+              format: int64
+            error_list:
+              description: 仕様書に記載されていないキーです。
+              nullable: true
+              type: array
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+              example: null
+        datasets:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dataset"
+    Dataset:
+      nullable: true
+      type: object
+      properties:
+        fund_cd:
+          type: string
+          description: ファンドコード
+          example: 253425
+        isin_cd:
+          type: string
+          description: ISINコード
+          example: JP90C000H1T1
+        association_fund_cd:
+          type: string
+          description: 協会コード
+          example: 0331418A
+        base_date:
+          type: string
+          description: 基準日
+          example: 20231229
+        fund_name:
+          type: string
+          description: ファンド正式名称
+          example: ｅＭＡＸＩＳ Ｓｌｉｍ 全世界株式（オール・カントリー）
+        nav:
+          type: number
+          format: int64
+          description: 基準価格
+          example: 20899
+        cmp_prev_day:
+          type: string
+          description: 前日比
+          example: 14
+        percentage_change:
+          type: string
+          description: 騰落率（前日比）
+          example: 0.07
+        cancellation_price:
+          type: integer
+          format: int64
+          description: 解約価格
+          example: 20899
+        netassets:
+          type: integer
+          format: int64
+          description: 純資産総額
+          example: 1820566040723
+        netassets_change_cmp_prev_day:
+          type: string
+          description: 純資産増減率（前日比）
+          example: 1.11
+        percentage_change_1m:
+          type: string
+          description: 騰落率[1ヵ月]
+          example: 1.51
+        percentage_change_3m:
+          type: string
+          description: 騰落率[3ヵ月]
+          example: 5.48
+        percentage_change_6m:
+          type: string
+          description: 騰落率[6ヵ月]
+          example: 6.22
+        percentage_change_1y:
+          type: string
+          description: 騰落率[1年]
+          example: 30.42
+        percentage_change_3y:
+          type: string
+          description: 騰落率[3年]
+          example: 63.43
+        percenage_change_full:
+          type: string
+          description: 騰落率[設定来]
+          example: 108.99
+        percentage_change_max_1m:
+          type: string
+          description: 最高騰落率[1ヵ月]
+          example: 7.41
+        percentage_change_max_3m:
+          type: string
+          description: 最高騰落率[3ヵ月]
+          example: 6.42
+        percentage_change_max_6m:
+          type: string
+          description: 最高騰落率[6ヵ月]
+          example: 26.24
+        percentage_change_max_1y:
+          type: string
+          description: 最高騰落率[1年]
+          example: 31.4
+        percentage_change_max_3y:
+          type: string
+          description: 最高騰落率[3年]
+          example: 101.33
+        percentage_change_max_full:
+          type: string
+          description: 最高騰落率[設定来]
+          example: 110.37
+        percentage_change_min_1m:
+          type: string
+          description: 最小騰落率[1ヵ月]
+          example: -0.88
+        percentage_change_min_3m:
+          type: string
+          description: 最小騰落率[3ヵ月]
+          example: -4.9
+        percentage_change_min_6m:
+          type: string
+          description: 最小騰落率[6ヵ月]
+          example: 5.53
+        percentage_change_min_1y:
+          type: string
+          description: 最小騰落率[1年]
+          example: -7.71
+        percentage_change_min_3y:
+          type: string
+          description: 最小騰落率[3年]
+          example: 33.24
+        percentage_change_min_full:
+          type: string
+          description: 最小騰落率[設定来]
+          example: -18.98
+        risk_1y:
+          type: string
+          description: リスク[1年]
+          example: 15
+        risk_3y:
+          type: string
+          description: リスク[3年]
+          example: 16
+        risk_full:
+          type: string
+          description: リスク[設定来]
+          example: 20
+        risk_return_1y:
+          type: string
+          description: リターン÷リスク[1年]
+          example: 2.08
+        risk_return_3y:
+          type: string
+          description: リターン÷リスク[3年]
+          example: 1.1
+        risk_return_full:
+          type: string
+          description: リターン÷リスク[設定来]
+          example: 0.8
+        nav_max_1m:
+          type: string
+          description: 基準価格最高値[1ヵ月]
+          example: 21037
+        nav_max_1m_dt:
+          type: string
+          description: 基準価格最高値_基準日[1ヵ月]
+          example: 20231220
+        nav_max_3m:
+          type: string
+          description: 基準価格最高値[3ヵ月]
+          example: 21037
+        nav_max_3m_dt:
+          type: string
+          description: 基準価格最高値_基準日[3ヵ月]
+          example: 20231220
+        nav_max_6m:
+          type: string
+          description: 基準価格最高値[6ヵ月]
+          example: 21037
+        nav_max_6m_dt:
+          type: string
+          description: 基準価格最高値_基準日[6ヵ月]
+          example: 20231220
+        nav_max_1y:
+          type: string
+          description: 基準価格最高値[1年]
+          example: 21037
+        nav_max_1y_dt:
+          type: string
+          description: 基準価格最高値_基準日[1年]
+          example: 20231220
+        nav_max_3y:
+          type: string
+          description: 基準価格最高値[3年]
+          example: 21037
+        nav_max_3y_dt:
+          type: string
+          description: 基準価格最高値_基準日[3年]
+          example: 20231220
+        nav_max_full:
+          type: string
+          description: 基準価格最高値[設定来]
+          example: 21037
+        nav_max_full_dt:
+          type: string
+          description: 基準価格最高値_基準日[設定来]
+          example: 20231220
+        nav_min_1m:
+          type: string
+          description: 基準価格最安値[1ヵ月]
+          example: 20165
+        nav_min_1m_dt:
+          type: string
+          description: 基準価格最安値_基準日[1ヵ月]
+          example: 20231208
+        nav_min_3m:
+          type: string
+          description: 基準価格最安値[3ヵ月]
+          example: 19026
+        nav_min_3m_dt:
+          type: string
+          description: 基準価格最安値_基準日[3ヵ月]
+          example: 20231030
+        nav_min_6m:
+          type: string
+          description: 基準価格最安値[6ヵ月]
+          example: 19026
+        nav_min_6m_dt:
+          type: string
+          description: 基準価格最安値_基準日[6ヵ月]
+          example: 20231030
+        nav_min_1y:
+          type: string
+          description: 基準価格最安値[1年]
+          example: 15757
+        nav_min_1y_dt:
+          type: string
+          description: 基準価格最安値_基準日[1年]
+          example: 20230104
+        nav_min_3y:
+          type: string
+          description: 基準価格最安値[3年]
+          example: 12738
+        nav_min_3y_dt:
+          type: string
+          description: 基準価格最安値_基準日[3年]
+          example: 20210105
+        nav_min_full:
+          type: string
+          description: 基準価格最安値[設定来]
+          example: 8102
+        nav_min_full_dt:
+          type: string
+          description: 基準価格最安値_基準日[設定来]
+          example: 20200324
+    CodeList:
+      nullable: true
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            status:
+              type: integer
+              format: int32
+              example: 200
+            retcount:
+              type: integer
+              format: int64
+              example: 1
+            errcd:
+              nullable: true
+              type: string
+              example: null
+            errmsg:
+              nullable: true
+              type: string
+              example: null
+            function:
+              type: string
+              example: 外部公開用コード一覧（全ファンド）
+        errors:
+          type: object
+          properties:
+            count:
+              type: integer
+              format: int64
+            error_list:
+              nullable: true
+              type: array
+              example: null
+        datasets:
+          nullable: true
+          type: array
+          items:
+            $ref: "#/components/schemas/Code"
+    Code:
+      type: object
+      properties:
+        fund_cd:
+          type: string
+          example: 253425
+        isin_cd:
+          type: string
+          example: JP90C000H1T1
+        association_fund_cd:
+          type: string
+          example: 0331418A
+        fund_name:
+          type: string
+          example: ｅＭＡＸＩＳ Ｓｌｉｍ 全世界株式（オール・カントリー）
